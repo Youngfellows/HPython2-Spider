@@ -19,12 +19,13 @@ def loadPage(url):
     content = etree.HTML(html)
     # print content
     # 返回所有匹配成功的列表集合
-    #link_list = content.xpath('//div[@class="t_con cleafix"]/div/div/div/a/@href')
+    # link_list = content.xpath('//div[@class="t_con cleafix"]/div/div/div/a/@href')
     link_list = content.xpath('//div[@class="thread_list_bottom clearfix"]/div/a/@href')
 
     # link_list = content.xpath('//a[@class="j_th_tit"]/@href')
     for link in link_list:
-        fulllink = "http://tieba.baidu.com" + link
+        # fulllink = "http://tieba.baidu.com" + link
+        fulllink = "https:" + link
         print fulllink
         # 组合为每个帖子的链接
         # print link
@@ -34,16 +35,20 @@ def loadPage(url):
 # 取出每个帖子里的每个图片连接
 def loadImage(link):
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"}
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"
+    }
     request = urllib2.Request(link, headers=headers)
     html = urllib2.urlopen(request).read()
     # 解析
     content = etree.HTML(html)
     # 取出帖子里每层层主发送的图片连接集合
     # link_list = content.xpath('//img[@class="BDE_Image"]/@src')
-    #link_list = content.xpath('//div[@class="post_bubble_middle"]')
-    link_list = content.xpath('//img[@class="threadlist_pic j_m_pic"]/@src')
+    # link_list = content.xpath('//div[@class="post_bubble_middle"]')
+    # link_list = content.xpath('//img[@class="threadlist_pic j_m_pic"]/@src')
+    link_list = content.xpath('//div[@class="media_bigpic_wrap"]/img/@src')
     # link_list = content.xpath('//img[@class="BDE_Image"]/@src')
+
+    print("link_list size is %d" % len(link_list))
     # 取出每个图片的连接
     for link in link_list:
         print link
