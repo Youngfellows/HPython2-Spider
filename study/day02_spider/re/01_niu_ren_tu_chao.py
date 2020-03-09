@@ -1,6 +1,7 @@
 # coding=utf-8
 import urllib2
 import random
+import json
 from lxml import etree
 
 
@@ -106,8 +107,9 @@ class Spider:
             把每条段子逐个写入文件里
             item: 处理后的每条段子
         """
-        with open("./json/duanzi.txt", "wb") as f:
-            f.write(str(self.duanzi_list))
+        with open("./json/duanzi.json", "wb") as f:
+            # f.write(str(self.duanzi_list))
+            json.dump(self.duanzi_list, f)
 
     def startWork(self):
         """
