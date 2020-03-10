@@ -17,6 +17,8 @@ class Spider:
         self.switch = True
         # 保存爬取信息
         self.duanzi_list = []
+        # 爬取的url
+        self.url = "http://www.bullpeople.cn/"  # 默认首页
 
     # 加载页面
     def loadPage(self):
@@ -24,8 +26,8 @@ class Spider:
             作用：下载页面
         """
         print("正在下载数据...")
-        url = "http://www.bullpeople.cn/"
-        print("download url: {}".format(url))
+        # url = "http://www.bullpeople.cn/"
+        print("down load url: {}".format(self.url))
 
         # 可以是User-Agent列表，也可以是代理列表
         ua_list = [
@@ -40,7 +42,7 @@ class Spider:
         user_agent = random.choice(ua_list)
 
         # 构造一个请求
-        request = urllib2.Request(url)
+        request = urllib2.Request(self.url)
 
         # add_header()方法 添加/修改 一个HTTP报头
         request.add_header("User-Agent", user_agent)
@@ -56,15 +58,23 @@ class Spider:
         # 解析
         dom_tree = etree.HTML(html)
 
+        # 下一页的url
+        links = dom_tree.xpath('//div[@class="sabrosus"]/a[@class="pos currentA"]/@href')
+
         # 取出帖子里段子的内容
         title_list = dom_tree.xpath('//div[@id="conbody"]//li/a[@class="tc"]/@title')  # title标题
         content_list = dom_tree.xpath('//div[@id="conbody"]//a[@class="tc"]')  # 内容
         comment_list = dom_tree.xpath('//div[@id="conbody"]//div[@class="clickSwiper pleft8"]/a')  # 评论
         start_list = dom_tree.xpath('//div[@id="conbody"]//span[@class="cursor"]/span')  # 赞
 
+        # 获取下一页的url
+        for link in links:
+            self.url = link
+            print("next page url: {}".format(self.url))
+
         # 标题列表
         for title in title_list:
-            #print ("title: %s" % title)
+            # print ("title: %s" % title)
             pass
 
         # 内容列表

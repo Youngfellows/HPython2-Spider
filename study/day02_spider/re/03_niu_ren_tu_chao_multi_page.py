@@ -17,6 +17,12 @@ class Spider:
         self.switch = True
         # 保存爬取信息
         self.duanzi_list = []
+        # 爬取的url
+        self.url = "http://www.bullpeople.cn/"  # 默认首页
+        # 爬取起始页
+        self.star = 1
+        # 爬取结束页
+        self.end = 1
 
     # 加载页面
     def loadPage(self):
@@ -24,8 +30,12 @@ class Spider:
             作用：下载页面
         """
         print("正在下载数据...")
-        url = "http://www.bullpeople.cn/"
-        print("download url: {}".format(url))
+        if (self.page == 1):  # 首页
+            self.url = "http://www.bullpeople.cn/"
+        else:
+            # 下一页
+            self.url = "http://www.bullpeople.cn/tucao/page_" + str(self.page) + ".html"
+        print("down load url: {}".format(self.url))
 
         # 可以是User-Agent列表，也可以是代理列表
         ua_list = [
@@ -40,7 +50,7 @@ class Spider:
         user_agent = random.choice(ua_list)
 
         # 构造一个请求
-        request = urllib2.Request(url)
+        request = urllib2.Request(self.url)
 
         # add_header()方法 添加/修改 一个HTTP报头
         request.add_header("User-Agent", user_agent)
@@ -56,15 +66,23 @@ class Spider:
         # 解析
         dom_tree = etree.HTML(html)
 
+        # 下一页的url
+        links = dom_tree.xpath('//div[@class="sabrosus"]/a[@class="pos currentA"]/@href')
+
         # 取出帖子里段子的内容
         title_list = dom_tree.xpath('//div[@id="conbody"]//li/a[@class="tc"]/@title')  # title标题
         content_list = dom_tree.xpath('//div[@id="conbody"]//a[@class="tc"]')  # 内容
         comment_list = dom_tree.xpath('//div[@id="conbody"]//div[@class="clickSwiper pleft8"]/a')  # 评论
         start_list = dom_tree.xpath('//div[@id="conbody"]//span[@class="cursor"]/span')  # 赞
 
+        # 获取下一页的url
+        # for link in links:
+        #     self.url = link
+        #     print("next page url: {}".format(self.url))
+
         # 标题列表
         for title in title_list:
-            #print ("title: %s" % title)
+            # print ("title: %s" % title)
             pass
 
         # 内容列表
@@ -116,7 +134,7 @@ class Spider:
         person = [{"name": "老王", "age": 33, "sex": "男"}, {"name": "赵敏", "age": 25, "sex": "女"}]
 
         # 保存json到文件
-        with open('./json/duanzi.json', 'w') as fp:
+        with open('./json/duanzi_multi.json', 'w') as fp:
             # fp.write(json_duanzi)
             # json.dump(person, fp, ensure_ascii=False)
             json.dump(self.duanzi_list, fp, ensure_ascii=False)
@@ -125,23 +143,37 @@ class Spider:
         """
              控制爬虫运行
         """
-        # 循环执行，直到 self.switch == False
-        while self.switch:
-            # 用户确定爬取的次数
-            self.loadPage()
-            command = raw_input("如果继续爬取，请按回车（退出输入quit)")
-            if command == "quit":
-                # 如果停止爬取，则输入 quit
-                self.switch = False
-            # 每次循环，page页码自增1
-            self.page += 1
+        while True:
+            try:
+                start = int(raw_input("请输入爬取起始页:"))
+                end = int(raw_input("请输入爬取结束页:"))
 
-        # 保存文件
-        self.writePage()
+                if end >= start:
+                    while self.page <= end:
+                        # 爬取
+                        self.loadPage()
+                        # 每次循环，page页码自增1
+                        self.page += 1
 
-        print("谢谢使用!")
-        print("爬取结果: {}".format(self.duanzi_list))
-        print("爬取结果: size = {}".format(len(self.duanzi_list)))
+                # 循环执行，直到 self.switch == False
+                # while self.switch:
+                #     # 用户确定爬取的次数
+                #     self.loadPage()
+                #     command = raw_input("如果继续爬取，请按回车（退出输入quit)")
+                #     if command == "quit":
+                #         # 如果停止爬取，则输入 quit
+                #         self.switch = False
+                #     # 每次循环，page页码自增1
+                #     self.page += 1
+
+                # 保存文件
+                self.writePage()
+                print("谢谢使用!")
+                print("爬取结果: {}".format(self.duanzi_list))
+                print("爬取结果: size = {}".format(len(self.duanzi_list)))
+                break
+            except ValueError as e:
+                print("请输入数字: {}".format(e.message))
 
 
 # 启动爬虫
