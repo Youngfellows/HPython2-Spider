@@ -134,7 +134,7 @@ class Spider:
         person = [{"name": "老王", "age": 33, "sex": "男"}, {"name": "赵敏", "age": 25, "sex": "女"}]
 
         # 保存json到文件
-        with open('./json/duanzi_multi.json', 'w') as fp:
+        with open('./json/duanzi_multi.json', 'wb') as fp:
             # fp.write(json_duanzi)
             # json.dump(person, fp, ensure_ascii=False)
             json.dump(self.duanzi_list, fp, ensure_ascii=False)
