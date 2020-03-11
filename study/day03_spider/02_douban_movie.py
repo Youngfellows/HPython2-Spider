@@ -10,9 +10,9 @@ from selenium.webdriver.common.keys import Keys
 url = "https://movie.douban.com/typerank?type_name=剧情&type=11&interval_id=100:90&action="
 
 # 查un关键PhantomJS浏览器对象
-# driver = webdriver.PhantomJS(executable_path=r"H:\Python\phantomjs-2.1.1-windows\bin\phantomjs.exe")
-driver = webdriver.PhantomJS(
-    executable_path=r"/mnt/samba/share/Selenium_PhantomJS_Driver/phantomjs_Driver/phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
+driver = webdriver.PhantomJS(executable_path=r"D:\Python\phantomjs-2.1.1-windows\bin\phantomjs.exe")
+# driver = webdriver.PhantomJS(
+#     executable_path=r"/mnt/samba/share/Selenium_PhantomJS_Driver/phantomjs_Driver/phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
 # driver = webdriver.PhantomJS()
 driver.get(url)
 
