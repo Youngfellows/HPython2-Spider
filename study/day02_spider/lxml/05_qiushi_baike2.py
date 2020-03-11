@@ -43,7 +43,8 @@ class Spider(object):
         # response.read()  为<class 'bytes'>对象
         # response.read().decode() 为字符串对象
         response = urllib2.urlopen(request)
-        html = response.read().decode()
+        # html = response.read().decode()
+        html = response.read()
 
         # 调用方法使用xpath获取信息
         return html

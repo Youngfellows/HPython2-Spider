@@ -115,7 +115,7 @@ def main():
     # 采集结果(每页的HTML源码)的数据队列，参数为空表示不限制
     dataQueue = Queue()
 
-    filename = open("duanzi.json", "a")
+    filename = open("./json/qiushi_duanzi.json", "a")
     # 创建锁
     lock = threading.Lock()
 
