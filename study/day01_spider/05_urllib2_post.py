@@ -2,6 +2,11 @@
 
 import urllib
 import urllib2
+import json
+import sys
+
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 # 通过抓包的方式获取的url，并不是浏览器上显示的url
 url = "https://aidemo.youdao.com/trans"
@@ -34,5 +39,15 @@ data = urllib.urlencode(formdata)
 # 如果没有，就是Get
 request = urllib2.Request(url, data=data, headers=headers)
 
-html = urllib2.urlopen(request).read()
+html = urllib2.urlopen(request).read().decode("utf-8")
 print html
+
+# unicode 转 中文
+translate_results = json.loads(html)
+results = translate_results["basic"]["explains"]
+print ("翻译中文: {} ".format(translate_results["query"]))
+print ("翻译结果: {} ".format(results))
+i = 1
+for english in results:
+    print("{} {}".format(i, english))
+    i += 1
