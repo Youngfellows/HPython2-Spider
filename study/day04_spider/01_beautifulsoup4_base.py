@@ -75,14 +75,20 @@ def main():
 
     print("********************** 获取属性class=story的p标签的全部字节点 *************************")
     p_ele_2 = soup.find(name="p", attrs={"class": "story"})
-    p2 = soup.find(class_="story")  # 找出p标签
+    p2 = soup.find(name="p", class_="story")  # 找出p标签
     print(type(p2))
     print p2
     print p2.get_text()
 
+    # 获取子节点
+    # a_ele_list = p2.find_all(name="a")
+    a_ele_list = p2.find_all(name="a", class_="sister")
+    # a_ele_list = p2.find_all(name="a", attrs={"class": "sister"})
 
-    # ele_a = p2_soup.find(name="a")
-    # print ele_a
+    print(a_ele_list)
+    for a in a_ele_list:
+        # print a.string + ":" + a["href"]
+        print("{} : {}".format(a.string, a["href"]))
 
     # 获取 id 为 link2 的超链接
     # link2_href = soup.find(id='link2')
