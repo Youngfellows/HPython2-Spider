@@ -25,7 +25,7 @@ def writePage(html, filename):
     """
     print "正在保存 " + filename
     # 文件写入
-    with open(filename, "w") as f:
+    with open(filename.decode("utf-8"), "w") as f:
         f.write(html)
     print "-" * 30
 
